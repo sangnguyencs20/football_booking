@@ -1,27 +1,24 @@
-const express = require("express");
 const mongoose = require("mongoose");
-const getAllUsers = require("./controllers/User.js");
-const userRouter = require("./routes/user");
-const connectDB = async()=>{
-    try{
-        await mongoose.connect('mongodb+srv://sangnv:1234@cluster0.ft9rone.mongodb.net/football_database?retryWrites=true&w=majority')
-        console.log("Connected to MongoDB database");
-    }catch(message){
-        console.log(error.message);
-        process.exit(1);
-    }
-}
-connectDB();
-//connect to database
+const connectDB = require("./db/connectDB");
+require("dotenv").config();
 
+const port = process.env.PORT || 3000;
 const app = express();
-app.listen('3001',(req,res)=>{
-    console.log("Server is running on port 3001")
-})
+const start = async () => {
+  try {
+    await connectDB(process.env.MONGo_URI);
+    app.listen(port, () =>
+      console.log(`Server is listening on port ${port}...`)
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-app.get('/',(req,res)=>{
-    console.log("Home page");
+app
+  .get("/", (req, res) => {
     res.send("Home");
-})
-
-app.use('/api/', userRouter);
+  })
+  .post("/", (req, res) => {
+    res.send("Post home");
+  });
