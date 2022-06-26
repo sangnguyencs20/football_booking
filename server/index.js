@@ -1,5 +1,3 @@
-const express = require("express");
-
 const mongoose = require("mongoose");
 const connectDB = require("./db/connectDB");
 require("dotenv").config();
